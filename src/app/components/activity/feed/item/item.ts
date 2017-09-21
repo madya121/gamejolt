@@ -11,6 +11,7 @@ import { AppActivityFeedDevlogPost } from '../devlog-post/devlog-post';
 import { AppActivityFeedNotification } from '../notification/notification';
 import { Screen } from '../../../../../lib/gj-lib-client/components/screen/screen-service';
 import { AppActivityFeedItemPlaceholder } from './placeholder/placeholder';
+import { Environment } from '../../../../../lib/gj-lib-client/components/environment/environment.service';
 
 @View
 @Component({
@@ -26,7 +27,7 @@ export class AppActivityFeedItem extends Vue {
 	@Prop(ActivityFeedContainer) feed: ActivityFeedContainer;
 
 	inviewPadding = Screen.windowHeight;
-	isBootstrapped = GJ_IS_SSR;
+	isBootstrapped = Environment.isCrawler;
 
 	mounted() {
 		if (this.item.height) {
@@ -48,7 +49,7 @@ export class AppActivityFeedItem extends Vue {
 	}
 
 	get isHydrated() {
-		return GJ_IS_SSR || !!this.feed.inViewItems[this.item.id];
+		return Environment.isCrawler || !!this.feed.inViewItems[this.item.id];
 	}
 
 	get isActive() {

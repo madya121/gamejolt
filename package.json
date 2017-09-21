@@ -30,6 +30,7 @@
 		"bootstrap-stylus": "hworld/bootstrap-stylus#master",
 		"chart.js": "2.7.0",
 		"codemirror": "5.29.0",
+		"cookie-parser": "1.4.3",
 		"core-js": "2.5.1",
 		"cropperjs": "1.0.0",
 		"css-element-queries": "0.4.0",

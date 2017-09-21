@@ -6,6 +6,7 @@ import { Scroll } from '../../../../lib/gj-lib-client/components/scroll/scroll.s
 import { objectEquals } from '../../../../lib/gj-lib-client/utils/object';
 import { router } from '../../../views/index';
 import { Translate } from '../../../../lib/gj-lib-client/components/translate/translate.service';
+import { Environment } from '../../../../lib/gj-lib-client/components/environment/environment.service';
 
 const STORAGE_KEY = 'game-filtering:filters';
 
@@ -29,7 +30,7 @@ export function checkGameFilteringRoute(route: VueRouter.Route) {
 	});
 
 	// We only do work if the URL is bare with no filters set yet.
-	if (!paramFiltersFound && !GJ_IS_SSR) {
+	if (!paramFiltersFound && !Environment.isCrawler) {
 		if (window.localStorage[STORAGE_KEY]) {
 			console.log('from storage');
 
@@ -57,7 +58,7 @@ export function checkGameFilteringRoute(route: VueRouter.Route) {
 				// Always add in all browser types if we auto-detected.
 				// TODO: Would be nice to not have to manually add every single one in, but rather just a single filter for all browser types.
 				if (!GJ_IS_CLIENT) {
-					filters.browser = Object.keys(GameFilteringContainer.definitions.browser.options);
+					filters.browser = Object.keys(GameFilteringContainer.definitions.browser.options || {});
 				} else {
 					// On client we only do HTML for now.
 					filters.browser = ['html'];

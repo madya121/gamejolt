@@ -43,6 +43,7 @@ export class AppShellTopNav extends Vue {
 	friendRequestCount = 0;
 	friendRequestsShowing = false;
 	userMenuShowing = false;
+	isMounted = false;
 
 	Environment = Environment;
 	Screen = makeObservableService(Screen);
@@ -50,4 +51,11 @@ export class AppShellTopNav extends Vue {
 
 	@Action toggleRightPane: Store['toggleRightPane'];
 	@Action toggleLeftPane: Store['toggleLeftPane'];
+
+	async mounted() {
+		// We don't want to include the chat until the shell is mounted in. This is because SSR will
+		// complain that the DOM doesn't match server.
+		await this.$nextTick();
+		this.isMounted = true;
+	}
 }

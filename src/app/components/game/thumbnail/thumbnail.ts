@@ -66,9 +66,9 @@ export class AppGameThumbnail extends Vue {
 
 	@State app: AppStore;
 
-	isBootstrapped = GJ_IS_SSR;
-	isHydrated = GJ_IS_SSR;
-	isThumbnailLoaded = GJ_IS_SSR;
+	isBootstrapped = false;
+	isHydrated = false;
+	isThumbnailLoaded = false;
 	isWindowFocused = typeof document !== 'undefined' && document.hasFocus
 		? document.hasFocus()
 		: true;
@@ -135,7 +135,8 @@ export class AppGameThumbnail extends Vue {
 		if (this.pricing && this.saleOldPricing) {
 			return ((this.saleOldPricing.amount - this.pricing.amount) /
 				this.saleOldPricing.amount *
-				100).toFixed(0);
+				100
+			).toFixed(0);
 		}
 		return '';
 	}
@@ -153,6 +154,8 @@ export class AppGameThumbnail extends Vue {
 	}
 
 	created() {
+		this.isBootstrapped = GJ_IS_SSR || this.app.hydrated;
+
 		thumbnails.push(this);
 	}
 

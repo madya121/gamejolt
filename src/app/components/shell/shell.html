@@ -21,7 +21,7 @@
 		logging out and the whole page would disappear.
 	-->
 	<div>
-		<app-shell-chat v-if="chat" />
+		<app-shell-chat v-if="isMounted && chat" />
 	</div>
 
 	<div>

@@ -23,7 +23,7 @@ export class AppActivityFeedDevlogPostSketchfab extends Vue {
 
 	post: FiresidePost = null as any;
 	sketchfab: FiresidePostSketchfab | null = null;
-	isShowing = GJ_IS_SSR;
+	isShowing = false;
 	contentBootstrapped = false;
 
 	created() {

@@ -24,8 +24,7 @@ export class AppActivityFeedDevlogPostVideo extends Vue {
 	post: FiresidePost = null as any;
 	video: FiresidePostVideo | null = null;
 	contentBootstrapped = false;
-	isShowingVideo = GJ_IS_SSR;
-	shouldAutoplay = !GJ_IS_SSR;
+	isShowingVideo = false;
 
 	created() {
 		this.post = this.item.feedItem as FiresidePost;

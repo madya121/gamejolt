@@ -4,6 +4,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const cluster = require('cluster');
+const cookieParser = require('cookie-parser');
 const { createBundleRenderer } = require('vue-server-renderer');
 
 // We will restart each worker after around this many requests.
@@ -13,8 +14,8 @@ function resolve(file) {
 	return path.resolve(__dirname, file);
 }
 
-const numWorkers = require('os').cpus().length;
 const isProd = process.env.NODE_ENV === 'production';
+const numWorkers = !isProd ? 1 : require('os').cpus().length;
 
 if (cluster.isMaster) {
 	console.log(`Master ${process.pid} is running`);
@@ -47,6 +48,8 @@ if (cluster.isMaster) {
 	const app = express();
 	const server = http.createServer(app);
 
+	app.use(cookieParser());
+
 	const renderer = createBundleRenderer(serverBundle, {
 		runInNewContext: true,
 		template: fs.readFileSync(resolve('./index-ssr.html'), 'utf-8'),
@@ -75,8 +78,10 @@ if (cluster.isMaster) {
 	let numRequests = 0;
 	app.get('*', (req, res) => {
 		const context = {
+			isCrawler: false,
 			url: req.url,
 			ua: req.headers['user-agent'],
+			authCookie: req.cookies.frontend,
 		};
 
 		const s = Date.now();

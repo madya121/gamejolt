@@ -9,6 +9,7 @@ export default (context: any) => {
 	return new Promise((resolve, reject) => {
 		const s = Date.now();
 
+		Environment.isCrawler = context.isCrawler;
 		Environment.ssrContext = context;
 		Device.ua = context.ua;
 		router.push(context.url);

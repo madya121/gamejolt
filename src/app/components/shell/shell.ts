@@ -42,11 +42,18 @@ export class AppShell extends Vue {
 
 	@Action clearPanes: Store['clearPanes'];
 
-	mounted() {
+	isMounted = false;
+
+	async mounted() {
 		// When changing routes, hide all overlays.
 		this.$router.beforeEach((_to, _from, next) => {
 			this.clearPanes();
 			next();
 		});
+
+		// We don't want to include the chat until the shell is mounted in. This is because SSR will
+		// complain that the DOM doesn't match server.
+		await this.$nextTick();
+		this.isMounted = true;
 	}
 }
